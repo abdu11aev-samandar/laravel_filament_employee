@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CountryResource\Pages;
-use App\Filament\Resources\CountryResource\RelationManagers;
-use App\Models\Country;
+use App\Filament\Resources\StateResource\Pages;
+use App\Filament\Resources\StateResource\RelationManagers;
+use App\Models\State;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CountryResource extends Resource
+class StateResource extends Resource
 {
-    protected static ?string $model = Country::class;
+    protected static ?string $model = State::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -24,7 +24,8 @@ class CountryResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Card::make([
-                    Forms\Components\TextInput::make('country_code'),
+                    Forms\Components\Select::make('country_id')
+                        ->relationship('country','name'),
                     Forms\Components\TextInput::make('name'),
                 ])->columns(2)
             ]);
@@ -35,8 +36,8 @@ class CountryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('country_code')->sortable()->searchable(),
                 Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
+                Tables\Columns\TextColumn::make('country.name')->sortable(),
                 Tables\Columns\TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
@@ -61,9 +62,9 @@ class CountryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCountries::route('/'),
-            'create' => Pages\CreateCountry::route('/create'),
-            'edit' => Pages\EditCountry::route('/{record}/edit'),
+            'index' => Pages\ListStates::route('/'),
+            'create' => Pages\CreateState::route('/create'),
+            'edit' => Pages\EditState::route('/{record}/edit'),
         ];
     }
 }

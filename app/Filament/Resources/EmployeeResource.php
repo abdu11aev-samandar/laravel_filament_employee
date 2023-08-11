@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\CountryResource\Pages;
-use App\Filament\Resources\CountryResource\RelationManagers;
-use App\Models\Country;
+use App\Filament\Resources\EmployeeResource\Pages;
+use App\Filament\Resources\EmployeeResource\RelationManagers;
+use App\Models\Employee;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CountryResource extends Resource
+class EmployeeResource extends Resource
 {
-    protected static ?string $model = Country::class;
+    protected static ?string $model = Employee::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
@@ -23,10 +23,7 @@ class CountryResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Card::make([
-                    Forms\Components\TextInput::make('country_code'),
-                    Forms\Components\TextInput::make('name'),
-                ])->columns(2)
+                //
             ]);
     }
 
@@ -34,36 +31,32 @@ class CountryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')->sortable(),
-                Tables\Columns\TextColumn::make('country_code')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('name')->sortable()->searchable(),
-                Tables\Columns\TextColumn::make('created_at')->dateTime(),
+                //
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
     }
-
+    
     public static function getRelations(): array
     {
         return [
             //
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCountries::route('/'),
-            'create' => Pages\CreateCountry::route('/create'),
-            'edit' => Pages\EditCountry::route('/{record}/edit'),
+            'index' => Pages\ListEmployees::route('/'),
+            'create' => Pages\CreateEmployee::route('/create'),
+            'edit' => Pages\EditEmployee::route('/{record}/edit'),
         ];
-    }
+    }    
 }
