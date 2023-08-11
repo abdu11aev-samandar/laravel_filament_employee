@@ -27,11 +27,11 @@ class CountryResource extends Resource
             ->schema([
                 Forms\Components\Card::make([
                     Forms\Components\TextInput::make('country_code')
-                    ->required()
-                    ->maxLength(3),
+                        ->required()
+                        ->maxLength(3),
                     Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
+                        ->required()
+                        ->maxLength(255),
                 ])->columns(2)
             ]);
     }
@@ -60,7 +60,8 @@ class CountryResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\EmployeesRelationManager::class,
+            RelationManagers\StatesRelationManager::class,
         ];
     }
 
