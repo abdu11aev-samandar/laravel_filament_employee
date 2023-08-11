@@ -20,7 +20,7 @@ class EmployeeResource extends Resource
 {
     protected static ?string $model = Employee::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
     public static function form(Form $form): Form
     {
@@ -31,11 +31,13 @@ class EmployeeResource extends Resource
                     Forms\Components\Select::make('country_id')
                         ->label('Country')
                         ->options(Country::all()->pluck('name', 'id')->toArray())
+                        ->required()
                         ->reactive()
                         ->afterStateUpdated(fn(callable $set) => $set('state_id', null)),
 
                     Forms\Components\Select::make('state_id')
                         ->label('State')
+                        ->required()
                         ->options(function (callable $get) {
                             $country = Country::find($get('country_id'));
                             if (!$country) {
@@ -48,6 +50,7 @@ class EmployeeResource extends Resource
 
                     Forms\Components\Select::make('city_id')
                         ->label('City')
+                        ->required()
                         ->options(function (callable $get) {
                             $state = State::find($get('state_id'));
                             if (!$state) {
@@ -59,11 +62,16 @@ class EmployeeResource extends Resource
                         ->afterStateUpdated(fn(callable $set) => $set('city_id', null)),
 
                     Forms\Components\Select::make('department_id')
-                        ->relationship('department', 'name')->required(),
-                    Forms\Components\TextInput::make('first_name')->required(),
-                    Forms\Components\TextInput::make('last_name')->required(),
-                    Forms\Components\TextInput::make('address')->required(),
-                    Forms\Components\TextInput::make('zip_code')->required(),
+                        ->relationship('department', 'name')
+                        ->required(),
+                    Forms\Components\TextInput::make('first_name')->required()
+                        ->minLength(2)
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('last_name')->required()
+                        ->minLength(2)
+                        ->maxLength(255),
+                    Forms\Components\TextInput::make('address')->required()->maxLength(255),
+                    Forms\Components\TextInput::make('zip_code')->required()->maxLength(255),
                     Forms\Components\DatePicker::make('birth_date')->required(),
                     Forms\Components\DatePicker::make('date_hired')->required(),
                 ])->columns(2)

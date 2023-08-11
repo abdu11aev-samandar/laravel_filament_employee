@@ -17,15 +17,21 @@ class CountryResource extends Resource
 {
     protected static ?string $model = Country::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-flag';
+
+    protected static ?string $navigationGroup = 'System Management';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\Card::make([
-                    Forms\Components\TextInput::make('country_code'),
-                    Forms\Components\TextInput::make('name'),
+                    Forms\Components\TextInput::make('country_code')
+                    ->required()
+                    ->maxLength(3),
+                    Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
                 ])->columns(2)
             ]);
     }
